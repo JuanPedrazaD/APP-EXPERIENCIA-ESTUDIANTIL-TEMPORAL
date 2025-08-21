@@ -3,6 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import configuration from './infrastructure/interface/common/config/config';
 import { AuthModule } from './application/auth/auth.module';
 import { LoggerModule } from './infrastructure/interface/common/logger/logger.module';
+import { CfmTokenModule } from './application/cfm-token/cfm-token.module';
+import { NewAppModule } from './application/app/new-app.module';
 
 @Module({
   imports: [
@@ -13,6 +15,8 @@ import { LoggerModule } from './infrastructure/interface/common/logger/logger.mo
     }),
     LoggerModule,
     AuthModule,
+    CfmTokenModule,
+    NewAppModule,
   ],
 })
 export class AppModule {}
