@@ -1,4 +1,4 @@
-import { UserAuthEntity } from 'src/domain/auth/entities/user-auth.pstgs.entity';
+import { UserAuthEntity } from 'src/domain/auth/entity/user-auth.pstgs.entity';
 import { DataSource } from 'typeorm';
 export const authProviders = [
   {

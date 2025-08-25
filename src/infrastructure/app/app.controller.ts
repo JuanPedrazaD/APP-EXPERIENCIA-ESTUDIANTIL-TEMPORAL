@@ -13,11 +13,11 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 
 import { CommonApiDocResponses } from '../interface/common/utils/decorators/common-api-doc-responses.decorator';
-import { CreateAppRequestDto } from 'src/domain/app/dtos/create-app-request.dto';
+import { CreateAppRequestDto } from 'src/domain/app/dto/create-app-request.dto';
 import { SaveAppService } from 'src/application/app/save-app.service';
 import { ShowAllAppsService } from 'src/application/app/show-all-apps.service';
 import { DeleteAppService } from 'src/application/app/delete-app.service';
-import { UpdateAppRequestDto } from 'src/domain/app/dtos/update-app-request.dto';
+import { UpdateAppRequestDto } from 'src/domain/app/dto/update-app-request.dto';
 import { UpdateAppService } from 'src/application/app/update-app.service';
 
 @ApiTags('APP')

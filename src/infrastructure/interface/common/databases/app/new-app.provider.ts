@@ -1,4 +1,4 @@
-import { AppEntity } from 'src/domain/app/entities/app-entity.pstgs.entity';
+import { AppEntity } from 'src/domain/app/entity/app.pstgs.entity';
 import { DataSource } from 'typeorm';
 
 export const newAppProviders = [

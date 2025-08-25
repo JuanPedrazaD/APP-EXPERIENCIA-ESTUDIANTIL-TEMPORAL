@@ -7,8 +7,8 @@ import {
 } from '@nestjs/swagger';
 import { LoginService } from 'src/application/auth/login.service';
 import { RegisterService } from 'src/application/auth/register.service';
-import { AuthRequestDto } from 'src/domain/auth/dtos/auth-request.dto';
-import { AuthResponseDto } from 'src/domain/auth/dtos/auth-response.dto';
+import { AuthRequestDto } from 'src/domain/auth/dto/auth-request.dto';
+import { AuthResponseDto } from 'src/domain/auth/dto/auth-response.dto';
 
 @Controller('auth')
 export class AuthController {
