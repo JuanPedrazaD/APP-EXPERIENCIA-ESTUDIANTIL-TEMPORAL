@@ -4,8 +4,8 @@ import { Logger } from 'winston';
 
 import { Repository } from 'typeorm';
 
-import { CreateAppRequestDto } from 'src/domain/app/dtos/create-app-request.dto';
-import { AppEntity } from 'src/domain/app/entities/app-entity.pstgs.entity';
+import { CreateAppRequestDto } from 'src/domain/app/dto/create-app-request.dto';
+import { AppEntity } from 'src/domain/app/entity/app.pstgs.entity';
 import { catchGenericException } from 'src/infrastructure/interface/common/utils/errors/catch-generic.exception';
 
 @Injectable()
