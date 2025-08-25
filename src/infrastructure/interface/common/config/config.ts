@@ -24,6 +24,14 @@ export interface EnvInterface {
     DBPASSWORD: string;
     LOGGER: LogLevel[];
   };
+  DB_ORACLE: {
+    DBHOST: string;
+    DBPORT: number;
+    DBNAME: string;
+    DBUSERNAME: string;
+    DBPASSWORD: string;
+    LOGGER: LogLevel[];
+  };
 }
 
 export default registerAs('configuration', (): EnvInterface => {
@@ -51,11 +59,19 @@ export default registerAs('configuration', (): EnvInterface => {
     },
     DB_POSTGRESQL: {
       DBHOST: process.env.DB_POSTGRESQL_HOST || 'localhost',
-      DBPORT: parseInt(process.env.DB_POSTGRESQL_PORT || '1521', 10),
+      DBPORT: parseInt(process.env.DB_POSTGRESQL_PORT || '5433', 10),
       DBNAME: process.env.DB_POSTGRESQL_NAME || 'XE',
       DBUSERNAME: process.env.DB_POSTGRESQL_USER || 'postgresql_user',
       DBPASSWORD: process.env.DB_POSTGRESQL_PASS || 'postgresql_pass',
       LOGGER: JSON.parse(process.env.POSTGRESQL_LOGGER || '[]'),
+    },
+    DB_ORACLE: {
+      DBHOST: process.env.DB_ORACLE_HOST || 'localhost',
+      DBPORT: parseInt(process.env.DB_ORACLE_PORT || '1521', 10),
+      DBNAME: process.env.DB_ORACLE_NAME || 'XE',
+      DBUSERNAME: process.env.DB_ORACLE_USER || 'oracle_user',
+      DBPASSWORD: process.env.DB_ORACLE_PASS || 'oracle_pass',
+      LOGGER: JSON.parse(process.env.ORACLE_LOGGER || '[]'),
     },
   };
 });
