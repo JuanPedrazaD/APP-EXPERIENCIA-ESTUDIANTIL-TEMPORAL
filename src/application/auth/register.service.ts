@@ -6,9 +6,9 @@ import { Repository } from 'typeorm';
 
 import { catchGenericException } from 'src/infrastructure/interface/common/utils/errors/catch-generic.exception';
 import { hashData } from 'src/infrastructure/interface/common/utils/auth/hash-check.utils';
-import { UserAuthEntity } from 'src/domain/auth/entities/user-auth.pstgs.entity';
-import { AuthRequestDto } from 'src/domain/auth/dtos/auth-request.dto';
-import { AuthResponseDto } from 'src/domain/auth/dtos/auth-response.dto';
+import { UserAuthEntity } from 'src/domain/auth/entity/user-auth.pstgs.entity';
+import { AuthRequestDto } from 'src/domain/auth/dto/auth-request.dto';
+import { AuthResponseDto } from 'src/domain/auth/dto/auth-response.dto';
 
 @Injectable()
 export class RegisterService {

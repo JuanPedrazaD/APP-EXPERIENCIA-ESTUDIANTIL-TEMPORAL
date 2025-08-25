@@ -5,10 +5,10 @@ import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 
 import { catchGenericException } from 'src/infrastructure/interface/common/utils/errors/catch-generic.exception';
-import { UserAuthEntity } from 'src/domain/auth/entities/user-auth.pstgs.entity';
+import { UserAuthEntity } from 'src/domain/auth/entity/user-auth.pstgs.entity';
 import { compareHashWithPlain } from 'src/infrastructure/interface/common/utils/auth/hash-check.utils';
-import { AuthResponseDto } from 'src/domain/auth/dtos/auth-response.dto';
-import { AuthRequestDto } from 'src/domain/auth/dtos/auth-request.dto';
+import { AuthResponseDto } from 'src/domain/auth/dto/auth-response.dto';
+import { AuthRequestDto } from 'src/domain/auth/dto/auth-request.dto';
 
 @Injectable()
 export class LoginService {

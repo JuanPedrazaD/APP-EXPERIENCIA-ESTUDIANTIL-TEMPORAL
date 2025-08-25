@@ -5,9 +5,15 @@ import { DatabasesModule } from 'src/infrastructure/interface/common/databases/d
 import { SaveAppService } from './save-app.service';
 import { ShowAllAppsService } from './show-all-apps.service';
 import { DeleteAppService } from './delete-app.service';
+import { UpdateAppService } from './update-app.service';
 
 @Module({
-  providers: [SaveAppService, ShowAllAppsService, DeleteAppService],
+  providers: [
+    SaveAppService,
+    ShowAllAppsService,
+    UpdateAppService,
+    DeleteAppService,
+  ],
   controllers: [AppController],
   imports: [DatabasesModule],
   exports: [],
