@@ -24,7 +24,7 @@ export class HandleTokenService {
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
 
-  async handleToken(saveTokenRequestDto: SaveTokenRequestDto) {
+  async handleToken(saveTokenRequestDto: SaveTokenRequestDto): Promise<void> {
     try {
       const {
         token,

@@ -12,7 +12,7 @@ export class CfmTokenController {
   constructor(private readonly saveTokenService: HandleTokenService) {}
 
   @Post('save')
-  saveToken(@Body() saveTokenRequestDto: SaveTokenRequestDto) {
+  saveToken(@Body() saveTokenRequestDto: SaveTokenRequestDto): Promise<void> {
     return this.saveTokenService.handleToken(saveTokenRequestDto);
   }
 }
