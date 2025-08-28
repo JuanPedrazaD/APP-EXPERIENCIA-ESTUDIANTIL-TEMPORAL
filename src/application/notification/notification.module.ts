@@ -9,9 +9,9 @@ import { GroupNotificationService } from './send-options/group-notification.serv
 import { IndividualNotificationService } from './send-options/individual-notification.service';
 import { HttpModule, HttpService } from '@nestjs/axios';
 import { SaveNotificationService } from './save/save-notification.service';
-import { Login360Service } from './groups/360/360-login.service';
-import { AdminValidationService } from './groups/360/admin-validation.service';
-import { StudentValidationService } from './groups/360/student-validation.service';
+import { Login360Service } from './groups/360-requests/360-apis-login.service';
+import { AdminValidationService } from './groups/360-requests/admin-validation.service';
+import { StudentValidationService } from './groups/360-requests/student-validation.service';
 
 @Module({
   providers: [
