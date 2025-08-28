@@ -8,13 +8,18 @@ export interface EnvInterface {
   TIMEOUT: number;
   API_PREFIX: string;
   APP_ENV: ValidAppEnv;
-  WEB360: string;
-  CDN: string;
+  // WEB360: string;
+  // CDN: string;
   TESTMAIL: string;
   SWAGGER: {
     SWAGGER_PATH: string;
     SWAGGER_USER: string;
     SWAGGER_PASS: string;
+  };
+  FIREBASE: {
+    PROJECT_ID: string;
+    CLIENT_EMAIL: string;
+    PRIVATE_KEY: string;
   };
   DB_POSTGRESQL: {
     DBHOST: string;
@@ -49,13 +54,18 @@ export default registerAs('configuration', (): EnvInterface => {
     TIMEOUT: parseInt(process.env.TIMEOUT || '60'),
     API_PREFIX: process.env.API_PREFIX || 'api/v2',
     APP_ENV: process.env.APP_ENV as ValidAppEnv,
-    WEB360: process.env.WEB360 || 'http://localhost:4200/#/',
-    CDN: process.env.CDN || 'http://localhost',
+    // WEB360: process.env.WEB360 || 'http://localhost:4200/#/',
+    // CDN: process.env.CDN || 'http://localhost',
     TESTMAIL: process.env.TESTMAIL || 'pruebas@cun.edu.co',
     SWAGGER: {
       SWAGGER_PATH: process.env.SWAGGER_PATH || 'swagger',
       SWAGGER_USER: process.env.SWAGGER_USER || 'root',
       SWAGGER_PASS: process.env.SWAGGER_PASS || '',
+    },
+    FIREBASE: {
+      PROJECT_ID: process.env.PROJECT_ID || 'projectId',
+      CLIENT_EMAIL: process.env.CLIENT_EMAIL || 'jhon_doe@cun.edu.co',
+      PRIVATE_KEY: process.env.PRIVATE_KEY || '123456789',
     },
     DB_POSTGRESQL: {
       DBHOST: process.env.DB_POSTGRESQL_HOST || 'localhost',

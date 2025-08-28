@@ -5,6 +5,7 @@ import { AuthModule } from './application/auth/auth.module';
 import { LoggerModule } from './infrastructure/interface/common/logger/logger.module';
 import { CfmTokenModule } from './application/cfm-token/cfm-token.module';
 import { NewAppModule } from './application/app/new-app.module';
+import { NotificationModule } from './application/notification/notification.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { NewAppModule } from './application/app/new-app.module';
     AuthModule,
     CfmTokenModule,
     NewAppModule,
+    NotificationModule,
   ],
 })
 export class AppModule {}
