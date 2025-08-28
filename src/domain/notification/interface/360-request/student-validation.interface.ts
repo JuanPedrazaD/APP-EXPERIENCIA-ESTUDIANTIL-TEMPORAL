@@ -1,0 +1,36 @@
+export interface StudentResponse {
+  thirdPartyId: number;
+  studentProgramId: number;
+  identificationNumber: string;
+  identificationType: string;
+  documentType: string;
+  fullName: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  secondLastName: string;
+  birthDate: string;
+  expeditionDate: string;
+  gender: string;
+  maritalStatus: string;
+  civilStatus: string;
+  residenceAddress: string;
+  institutionalEmail: string;
+  personalEmail: string;
+  homePhoneNumber: string;
+  mobilePhoneNumber: string;
+  unitCode: string;
+  curriculumCode: string;
+  educationLevel: string;
+  modalityCode: string;
+  modality: string;
+  entryPeriod: string;
+  activePeriod: string;
+  curriculumName: string;
+  unitName: string;
+  studentState: string;
+  status: string;
+  enrollment: string;
+  departmentName: string;
+  campusName: string;
+}

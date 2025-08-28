@@ -21,6 +21,16 @@ export interface EnvInterface {
     CLIENT_EMAIL: string;
     PRIVATE_KEY: string;
   };
+  API_360: {
+    USERNAME: string;
+    PASSWORD: string;
+    URL: string;
+  };
+  API_360_ADMIN: {
+    ADMIN_USERNAME: string;
+    ADMIN_PASSWORD: string;
+    ADMIN_URL: string;
+  };
   DB_POSTGRESQL: {
     DBHOST: string;
     DBPORT: number;
@@ -66,6 +76,18 @@ export default registerAs('configuration', (): EnvInterface => {
       PROJECT_ID: process.env.PROJECT_ID || 'projectId',
       CLIENT_EMAIL: process.env.CLIENT_EMAIL || 'jhon_doe@cun.edu.co',
       PRIVATE_KEY: process.env.PRIVATE_KEY || '123456789',
+    },
+    API_360: {
+      USERNAME: process.env.API_360_USERNAME || '360-username',
+      PASSWORD: process.env.API_360_PASSWORD || '360-password',
+      URL: process.env.API_360_URL || 'localhost:8085/api/v2',
+    },
+    API_360_ADMIN: {
+      ADMIN_USERNAME:
+        process.env.API_360_ADMIN_USERNAME || '360-admin-username',
+      ADMIN_PASSWORD:
+        process.env.API_360_ADMIN_PASSWORD || '360-admin-password',
+      ADMIN_URL: process.env.API_360_ADMIN_URL || 'localhost:8084/api/v2',
     },
     DB_POSTGRESQL: {
       DBHOST: process.env.DB_POSTGRESQL_HOST || 'localhost',

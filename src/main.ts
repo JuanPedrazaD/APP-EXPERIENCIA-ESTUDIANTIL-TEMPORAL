@@ -47,15 +47,15 @@ async function bootstrap() {
   const swaggerConfig = new DocumentBuilder()
     .setTitle('APP Encuestas')
     .setDescription(
-      'API diseñada para la gestión de encuestas de satisfacción y control de asistencia estudiantil. Permite a los docentes registrar asistencia y evaluar las condiciones del espacio de trabajo; a los estudiantes, calificar la clase recibida; y a los administrativos, consultar horarios docentes, revisar los estudiantes asignados y gestionar la calificación institucional de las clases.' +
+      'API diseñada para la gestión de envío de notificaciones, tanto de forma individual como de forma masiva.' +
         '\n\n' +
         '- Todos los endpoints están protegidos mediante autenticación `Bearer Token`, lo que garantiza un acceso seguro y controlado.' +
         '\n\n' +
-        '- Los docentes solo podrán visualizar los horarios correspondientes al día en el que se registra la asistencia. Adicional solo se podrán calificar clases de periodos activos.' +
+        '- Las notificaciones se podrán enviar de manera manual, pero tambien se contarán con notificaciones automaticas.' +
         '\n\n' +
-        '- Los estudiantes únicamente podrán responder la encuesta de satisfacción el mismo día en que el docente registre la asistencia.' +
+        '- Ya lleva configurado el almacenamiento de tokens.' +
         '\n\n' +
-        '- El personal administrativo puede consultar los horarios de un docente para un día específico; si no se especifica una fecha, se tomará como referencia la fecha actual.',
+        '- Las notificaciones se podrán enviar de manera individual o masivas.',
     )
     .addBearerAuth({
       type: 'http',

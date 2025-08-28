@@ -11,6 +11,13 @@ export class UserInfoEntity {
   document: string;
 
   @Column({
+    name: 'TIP_IDENTIFICACION',
+    type: 'varchar2',
+    length: 6,
+  })
+  idType: string;
+
+  @Column({
     name: 'DIR_EMAIL',
     type: 'varchar2',
     length: 100,
