@@ -1,7 +1,12 @@
+import { BatchResponse } from 'firebase-admin/lib/messaging/messaging-api';
+
 export abstract class NotificationSendPort {
-  abstract sendNotification(
-    token: string,
+  abstract sendNotificationToMultipleTokens(
+    tokens: string[],
     title: string,
     message: string,
-  ): void;
+  ): Promise<{
+    success: boolean;
+    response: BatchResponse;
+  }>;
 }

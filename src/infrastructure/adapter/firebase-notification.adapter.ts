@@ -9,6 +9,7 @@ import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { NotificationSendPort } from 'src/application/shared/port/notification-send.abstract';
 import { catchGenericException } from '../interface/common/utils/errors/catch-generic.exception';
 import { EnvInterface } from '../interface/common/config/config';
+import { BatchResponse } from 'firebase-admin/lib/messaging/messaging-api';
 
 @Injectable()
 export class FirebaseNotificationAdapter implements NotificationSendPort {
@@ -35,20 +36,35 @@ export class FirebaseNotificationAdapter implements NotificationSendPort {
     }
   }
 
-  async sendNotification(token: string, title: string, body: string) {
+  async sendNotificationToMultipleTokens(
+    tokens: string[],
+    title: string,
+    body: string,
+  ): Promise<{
+    success: boolean;
+    response: BatchResponse;
+  }> {
     try {
-      const message: admin.messaging.Message = {
-        token,
+      const message: admin.messaging.MulticastMessage = {
+        tokens,
         notification: {
           title,
           body,
         },
       };
 
-      const response = await this.firebaseApp.messaging().send(message);
+      const response: BatchResponse = await this.firebaseApp
+        .messaging()
+        .sendEachForMulticast(message);
 
-      this.logger.info(`Notificación enviada correctamente: ${response}`);
-      return { success: true, response };
+      this.logger.info(
+        `Notificación enviada: ${response.successCount} exitosas, ${response.failureCount} fallidas`,
+      );
+
+      return {
+        success: response.failureCount === 0,
+        response,
+      };
     } catch (e) {
       const message = `Error al enviar la notificación: ${
         e?.response?.data || e?.message || JSON.stringify(e)

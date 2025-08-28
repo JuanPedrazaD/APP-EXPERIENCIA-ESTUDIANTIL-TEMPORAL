@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  ValidateIf,
+} from 'class-validator';
 import { NotificationType } from 'src/infrastructure/interface/common/utils/helpers/enums/notification-type.utils.helpers';
 
 export class SendNotificationBaseDto {
@@ -23,4 +30,20 @@ export class SendNotificationBaseDto {
   @IsString()
   @IsNotEmpty()
   message: string;
+
+  @ApiProperty({
+    example: true,
+  })
+  @IsBoolean()
+  @IsNotEmpty()
+  saveNotification: boolean;
+
+  @ApiProperty({
+    example: 1,
+    required: false,
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  @ValidateIf((o) => o.saveNotification === true)
+  appId: number;
 }
