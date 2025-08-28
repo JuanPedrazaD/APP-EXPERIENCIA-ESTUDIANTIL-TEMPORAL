@@ -15,6 +15,10 @@ import { NotificationIndividualDto } from 'src/domain/notification/dto/send/indi
 import { NotificationSendPort } from '../../shared/port/notification-send.abstract';
 import { SaveNotificationService } from '../save/save-notification.service';
 import { SendHistoryEntity } from 'src/domain/notification/entity/send-history.pstgs.entity';
+import { NotificationType } from 'src/infrastructure/interface/common/utils/helpers/enums/notification-type.utils.helpers';
+// import { EmailSendPort } from 'src/application/shared/port/email-send.abstract';
+// import { EmailHTMLTemplateService } from 'src/application/shared/email-template-html.service';
+import { SendEmailService } from './send-email.service';
 
 const DEFAULT_NOTIFICATION_ID = 1; // Valor por defecto si no se guarda la notificación
 
@@ -27,11 +31,29 @@ export class IndividualNotificationService {
     private readonly sendHistoryRepository: Repository<SendHistoryEntity>,
     private readonly saveNotificationService: SaveNotificationService,
     private readonly notificationSendPort: NotificationSendPort,
+    private readonly sendEmailService: SendEmailService,
+    // private readonly emailSendPort: EmailSendPort,
+    // private readonly emailHTMLTemplateService: EmailHTMLTemplateService,
+
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
 
   async sendNotification(notificationIndividualDto: NotificationIndividualDto) {
     try {
+      //? Si el modo de envío es email se redirije a otro servicio
+      if (
+        notificationIndividualDto.notificationType ==
+        ('email' as NotificationType)
+      ) {
+        // const htmlBody: string = this.emailHTMLTemplateService.getEmailTemplate(
+        //   notificationIndividualDto.title,
+        //   notificationIndividualDto.message,
+        // );
+        // return this.emailSendPort.sendEmail();
+
+        return this.sendEmailService.sendEmail(notificationIndividualDto);
+      }
+
       // Cuando se decide no guardar la notificación se utiliza el id 1
       let notificationId: number = DEFAULT_NOTIFICATION_ID;
 
