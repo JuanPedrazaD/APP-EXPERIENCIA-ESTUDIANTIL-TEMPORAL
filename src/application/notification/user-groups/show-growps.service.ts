@@ -28,7 +28,7 @@ export class ShowGroupsService {
         },
       });
 
-      if (groups.length > 0) {
+      if (groups.length == 0) {
         throw new NotFoundException(
           'No se encontraron grupos de usuarios activos',
         );

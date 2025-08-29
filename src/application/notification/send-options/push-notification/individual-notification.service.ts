@@ -12,13 +12,11 @@ import {
 import { catchGenericException } from 'src/infrastructure/interface/common/utils/errors/catch-generic.exception';
 import { FcmTokenEntity } from 'src/domain/fcm-token/entity/fcm-token.pstgs.entity';
 import { NotificationIndividualDto } from 'src/domain/notification/dto/send/individual-group-request.dto';
-import { NotificationSendPort } from '../../shared/port/notification-send.abstract';
-import { SaveNotificationService } from '../save/save-notification.service';
-import { SendHistoryEntity } from 'src/domain/notification/entity/send-history.pstgs.entity';
+import { NotificationSendPort } from '../../../shared/port/notification-send.abstract';
 import { NotificationType } from 'src/infrastructure/interface/common/utils/helpers/enums/notification-type.utils.helpers';
-// import { EmailSendPort } from 'src/application/shared/port/email-send.abstract';
-// import { EmailHTMLTemplateService } from 'src/application/shared/email-template-html.service';
-import { SendEmailService } from './send-email.service';
+import { SaveNotificationService } from '../../save-notification.service';
+import { SendEmailService } from '../email/individual-email.service';
+import { SendHistoryEntity } from 'src/domain/notification/entity/send-history.pstgs.entity';
 
 const DEFAULT_NOTIFICATION_ID = 1; // Valor por defecto si no se guarda la notificación
 
@@ -32,55 +30,50 @@ export class IndividualNotificationService {
     private readonly saveNotificationService: SaveNotificationService,
     private readonly notificationSendPort: NotificationSendPort,
     private readonly sendEmailService: SendEmailService,
-    // private readonly emailSendPort: EmailSendPort,
-    // private readonly emailHTMLTemplateService: EmailHTMLTemplateService,
-
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
 
   async sendNotification(notificationIndividualDto: NotificationIndividualDto) {
-    try {
-      //? Si el modo de envío es email se redirije a otro servicio
-      if (
-        notificationIndividualDto.notificationType ==
-        ('email' as NotificationType)
-      ) {
-        // const htmlBody: string = this.emailHTMLTemplateService.getEmailTemplate(
-        //   notificationIndividualDto.title,
-        //   notificationIndividualDto.message,
-        // );
-        // return this.emailSendPort.sendEmail();
+    const { notificationType, saveNotification, title, email, message } =
+      notificationIndividualDto;
 
+    try {
+      //? Si el modo de envío es email se usa zeptomail
+      if (notificationType == ('email' as NotificationType)) {
         return this.sendEmailService.sendEmail(notificationIndividualDto);
       }
 
       // Cuando se decide no guardar la notificación se utiliza el id 1
       let notificationId: number = DEFAULT_NOTIFICATION_ID;
 
+      let saved: boolean = true;
+
       //Si el parametro es true se guarda la notificación o si existe se utiliza el id
-      if (notificationIndividualDto.saveNotification == true) {
-        notificationId = await this.saveNotificationService.saveNotification(
+      if (saveNotification == true) {
+        const response = await this.saveNotificationService.saveNotification(
           notificationIndividualDto,
         );
+        notificationId = response.id;
+        saved = response.saved;
       }
 
       //? Anotaciones para guardar el titulo y el mensaje cuando no se decide guardar la notificación
       let anotations: string = '';
-      if (notificationIndividualDto.saveNotification == false) {
-        anotations = `title: ${notificationIndividualDto.title}, message: ${notificationIndividualDto.message}`;
+      if (saveNotification == false) {
+        anotations = `title: ${title}, message: ${message}`;
       }
 
       //? Encontrar todos los dispositivos que tiene el usuario asignados
       const devices: FcmTokenEntity[] = await this.fcmTokenRepository.find({
         where: {
-          email: notificationIndividualDto.email,
+          email,
           state: 1,
         },
       });
 
       if (devices.length == 0) {
         throw new NotFoundException(
-          `No se encontraron dispositivos el usuario ${notificationIndividualDto.email}`,
+          `No se encontraron dispositivos el usuario ${email}`,
         );
       }
 
@@ -93,8 +86,8 @@ export class IndividualNotificationService {
         response: BatchResponse;
       } = await this.notificationSendPort.sendNotificationToMultipleTokens(
         tokens,
-        notificationIndividualDto.title,
-        notificationIndividualDto.message,
+        title,
+        message,
       );
 
       // Obtener las respuestas de los envíos
@@ -104,12 +97,48 @@ export class IndividualNotificationService {
       // Guardar un registro del envío de las notificaciones
       await this.sendHistoryRepository.save(
         arrayResponses.map((res, idx) => ({
-          notificationId: notificationId,
+          notificationId,
           tokenId: devices[idx].id,
           sendState: res.success ? 'success' : 'failure',
-          anotations: anotations,
+          anotations,
         })),
       );
+
+      // Contar cuántos fueron correctos y cuántos fallaron
+      const successCount = arrayResponses.filter((r) => r.success).length;
+      const failureCount = arrayResponses.length - successCount;
+
+      // Si hubo respuestas
+      if (arrayResponses.length > 0) {
+        // Extraer detalles de los fallos
+        const errors = arrayResponses
+          .map((res, idx) => {
+            if (!res.success) {
+              return {
+                tokenId: devices[idx].id,
+                error: res.error?.message || 'Unknown error',
+                code: res.error?.code || 'no-code',
+              };
+            }
+            return null;
+          })
+          .filter((f) => f !== null);
+
+        return {
+          saved,
+          total: arrayResponses.length,
+          sended: successCount,
+          failed: failureCount,
+          errors,
+        };
+      }
+      // Retornar el resultado vacío si no hubo respuestas
+      return {
+        saved,
+        total: arrayResponses.length,
+        failed: successCount,
+        errors: failureCount,
+      };
     } catch (e) {
       const message = `Ocurrió un error al enviar la notificación: ${e?.message}`;
       throw catchGenericException({ error: e, message, logger: this.logger });
