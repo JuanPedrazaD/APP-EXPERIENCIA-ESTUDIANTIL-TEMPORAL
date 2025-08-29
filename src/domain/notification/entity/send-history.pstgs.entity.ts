@@ -1,8 +1,8 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'historial_envios' })
 export class SendHistoryEntity {
-  @PrimaryColumn({ name: 'id', type: 'int' })
+  @PrimaryGeneratedColumn({ name: 'id', type: 'int' })
   id: number;
 
   @Column({ name: 'notificacion_id', type: 'int' })

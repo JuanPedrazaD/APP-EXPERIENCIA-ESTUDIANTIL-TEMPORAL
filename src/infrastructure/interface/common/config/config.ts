@@ -21,6 +21,12 @@ export interface EnvInterface {
     CLIENT_EMAIL: string;
     PRIVATE_KEY: string;
   };
+  ZEPTOMAIL: {
+    ZEPTOMAILKEY: string;
+    ZEPTOMAILURL: string;
+    ZEPTOMAILADDRESS: string;
+    ZEPTOMAILNAME: string;
+  };
   API_360: {
     USERNAME: string;
     PASSWORD: string;
@@ -76,6 +82,12 @@ export default registerAs('configuration', (): EnvInterface => {
       PROJECT_ID: process.env.PROJECT_ID || 'projectId',
       CLIENT_EMAIL: process.env.CLIENT_EMAIL || 'jhon_doe@cun.edu.co',
       PRIVATE_KEY: process.env.PRIVATE_KEY || '123456789',
+    },
+    ZEPTOMAIL: {
+      ZEPTOMAILKEY: process.env.ZEPTOMAILKEY || '',
+      ZEPTOMAILURL: process.env.ZEPTOMAILURL || '',
+      ZEPTOMAILADDRESS: process.env.ZEPTOMAILADDRESS || '',
+      ZEPTOMAILNAME: process.env.ZEPTOMAILNAME || '',
     },
     API_360: {
       USERNAME: process.env.API_360_USERNAME || '360-username',

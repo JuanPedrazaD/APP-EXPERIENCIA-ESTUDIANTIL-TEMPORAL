@@ -2,7 +2,6 @@ import {
   ApiBearerAuth,
   ApiOkResponse,
   ApiOperation,
-  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import {
@@ -12,20 +11,20 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
   Post,
   UseGuards,
 } from '@nestjs/common';
 
 import { AuthGuard } from 'src/application/auth/auth.guard';
 import { CommonApiDocResponses } from '../interface/common/utils/decorators/common-api-doc-responses.decorator';
-import { GroupNotificationService } from 'src/application/notification/send-options/group-notification.service';
-import { IndividualNotificationService } from 'src/application/notification/send-options/individual-notification.service';
+import { GroupNotificationService } from 'src/application/notification/send-options/push-notification/group-notification.service';
+import { IndividualNotificationService } from 'src/application/notification/send-options/push-notification/individual-notification.service';
 import { NotificationGroupDto } from 'src/domain/notification/dto/send/notification-group-request.dto';
 import { NotificationIndividualDto } from 'src/domain/notification/dto/send/individual-group-request.dto';
-import { ShowGroupsService } from 'src/application/notification/groups/show-growps.service';
+import { ShowGroupsService } from 'src/application/notification/user-groups/show-growps.service';
 import { UserGroupsEntity } from 'src/domain/notification/entity/user-groups.pstgs.entity';
-import { SearchUserService } from 'src/application/notification/groups/search-user.service';
+import { SearchUserService } from 'src/application/notification/user-groups/search-user.service';
+import { NotificationsByuserService } from 'src/application/notification/notifications-by-user.service';
 
 @ApiTags('NOTIFICATION')
 // @ApiBearerAuth()
@@ -34,23 +33,33 @@ import { SearchUserService } from 'src/application/notification/groups/search-us
 @Controller('notification')
 export class NotificationController {
   constructor(
+    private readonly notificationsByuser: NotificationsByuserService,
     private readonly showGroupsService: ShowGroupsService,
     private readonly searchUserService: SearchUserService,
     private readonly groupNotificationService: GroupNotificationService,
     private readonly individualNotificationService: IndividualNotificationService,
   ) {}
 
+  @Get('sended/:email')
+  getNotificationsByUser(@Param('email') email: string) {
+    return this.notificationsByuser.getNotifications(email);
+  }
+
+  @Post('historical')
+  getNotificacions() {}
+
   @Get('groups')
   getGroups(): Promise<UserGroupsEntity[]> {
     return this.showGroupsService.getGroups();
   }
 
-  @Get('user/:email')
+  //! Sacar este servicio de este controlador
+  @Get('user-info/:email')
   getUser(@Param('email') email: string) {
     return this.searchUserService.getUser(email);
   }
 
-  @Post('by-group')
+  @Post('send/by-group')
   sendGroupNotification(@Body() notificationGroupDto: NotificationGroupDto) {
     return this.groupNotificationService.sendNotification();
   }
@@ -67,7 +76,7 @@ export class NotificationController {
     description: 'Las notificaciones fueron enviadas',
   })
   @HttpCode(HttpStatus.OK)
-  @Post('individual')
+  @Post('send/individual')
   sendIndividualNotification(
     @Body() notificationIndividualDto: NotificationIndividualDto,
   ) {
