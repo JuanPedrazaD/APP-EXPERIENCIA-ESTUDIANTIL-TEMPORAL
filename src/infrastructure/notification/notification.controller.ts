@@ -25,6 +25,7 @@ import { ShowGroupsService } from 'src/application/notification/user-groups/show
 import { UserGroupsEntity } from 'src/domain/notification/entity/user-groups.pstgs.entity';
 import { SearchUserService } from 'src/application/notification/user-groups/search-user.service';
 import { NotificationsByuserService } from 'src/application/notification/notifications-by-user.service';
+import { NotificationByUserRequestDto } from 'src/domain/notification/dto/notification-by-user-request.dto';
 
 @ApiTags('NOTIFICATION')
 // @ApiBearerAuth()
@@ -40,9 +41,13 @@ export class NotificationController {
     private readonly individualNotificationService: IndividualNotificationService,
   ) {}
 
-  @Get('sended/:email')
-  getNotificationsByUser(@Param('email') email: string) {
-    return this.notificationsByuser.getNotifications(email);
+  @Get('sended-by-user')
+  getNotificationsByUser(
+    @Body() notificationByUserRequestDto: NotificationByUserRequestDto,
+  ) {
+    return this.notificationsByuser.getNotifications(
+      notificationByUserRequestDto,
+    );
   }
 
   @Post('historical')
