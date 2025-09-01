@@ -45,8 +45,14 @@ export class IndividualNotificationService {
 
       //Si el parametro es true se guarda la notificación o si existe se utiliza el id
       if (saveNotification == true) {
-        const response = await this.saveNotificationService.saveNotification(
-          notificationIndividualDto,
+        const response: {
+          id: number;
+          saved: boolean;
+        } = await this.saveNotificationService.saveNotification(
+          title,
+          message,
+          notificationType,
+          appId,
         );
         notificationId = response.id;
         saved = response.saved;

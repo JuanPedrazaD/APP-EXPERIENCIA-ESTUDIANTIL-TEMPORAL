@@ -15,7 +15,7 @@ export class NotificationHistoryEntity {
   appId: number;
 
   @Column({ name: 'tipo_envio', length: 50 })
-  send_type: string;
+  sendType: string;
 
   @Column({ name: 'imagen_url', length: 500 })
   urlImage: string;

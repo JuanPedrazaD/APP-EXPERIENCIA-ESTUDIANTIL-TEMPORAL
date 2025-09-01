@@ -9,7 +9,6 @@ import { Logger } from 'winston';
 
 import { Repository } from 'typeorm';
 import { NotificationHistoryEntity } from 'src/domain/notification/entity/notification-history.pstgs.entity';
-import { NotificationIndividualDto } from 'src/domain/notification/dto/send/individual-group-request.dto';
 import { catchGenericException } from 'src/infrastructure/interface/common/utils/errors/catch-generic.exception';
 
 @Injectable()
@@ -21,24 +20,24 @@ export class SaveNotificationService {
   ) {}
 
   async saveNotification(
-    notificationIndividualDto: NotificationIndividualDto,
-  ) /* : Promise<number> */ {
+    title: string,
+    message: string,
+    sendType: string,
+    appId: number,
+  ): Promise<{
+    id: number;
+    saved: boolean;
+  }> {
     try {
-      // Normalizas los valores del DTO
-      const title = notificationIndividualDto.title?.trim();
-      const message = notificationIndividualDto.message?.trim();
-      const sendType = notificationIndividualDto.notificationType?.trim();
-
       // Se valida si existe una notificación ya creada
-      const findNotification = await this.notificationHistoryRepository.findOne(
-        {
+      const findNotification: NotificationHistoryEntity | null =
+        await this.notificationHistoryRepository.findOne({
           where: {
             title,
             message,
-            send_type: sendType,
+            sendType,
           },
-        },
-      );
+        });
 
       //En caso de que si, se devuelve el id de la misma
       if (findNotification) {
@@ -46,12 +45,18 @@ export class SaveNotificationService {
       }
 
       //? Si la notificación aún no ha sido creada, se crea y se devuelve el id
-      const newNotification = await this.notificationHistoryRepository.save({
-        title: notificationIndividualDto.title,
-        message: notificationIndividualDto.message,
-        appId: notificationIndividualDto.appId,
-        send_type: notificationIndividualDto.notificationType,
-      });
+      const newNotification: {
+        title: string;
+        message: string;
+        appId: number;
+        send_type: string;
+      } & NotificationHistoryEntity =
+        await this.notificationHistoryRepository.save({
+          title: title,
+          message: message,
+          appId: appId,
+          send_type: sendType,
+        });
 
       return { id: newNotification.id, saved: true };
     } catch (e) {
