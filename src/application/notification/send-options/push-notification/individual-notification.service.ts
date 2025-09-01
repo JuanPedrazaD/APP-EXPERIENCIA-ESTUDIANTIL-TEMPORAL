@@ -38,11 +38,6 @@ export class IndividualNotificationService {
       notificationIndividualDto;
 
     try {
-      //? Si el modo de envío es email se usa zeptomail
-      if (notificationType == ('email' as NotificationType)) {
-        return this.sendEmailService.sendEmail(notificationIndividualDto);
-      }
-
       // Cuando se decide no guardar la notificación se utiliza el id 1
       let notificationId: number = DEFAULT_NOTIFICATION_ID;
 
@@ -61,6 +56,15 @@ export class IndividualNotificationService {
       let anotations: string = '';
       if (saveNotification == false) {
         anotations = `title: ${title}, message: ${message}`;
+      }
+
+      //? Si el modo de envío es email se usa zeptomail
+      if (notificationType == ('email' as NotificationType)) {
+        return this.sendEmailService.sendEmail(
+          notificationIndividualDto,
+          notificationId,
+          saved,
+        );
       }
 
       //? Encontrar todos los dispositivos que tiene el usuario asignados

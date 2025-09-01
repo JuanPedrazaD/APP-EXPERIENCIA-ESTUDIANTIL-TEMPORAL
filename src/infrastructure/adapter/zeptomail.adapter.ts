@@ -9,6 +9,7 @@ import { SendMailClient } from 'zeptomail';
 import { EmailSendPort } from 'src/application/shared/port/email-send.abstract';
 import { EnvInterface } from 'src/infrastructure/interface/common/config/config';
 import { catchGenericException } from '../interface/common/utils/errors/catch-generic.exception';
+import { ZeptoMailResponse } from 'src/domain/notification/interface/zeptomail/zeptomail-response.interface';
 
 @Injectable()
 export class zeptoMailAdapter implements EmailSendPort {
@@ -41,16 +42,17 @@ export class zeptoMailAdapter implements EmailSendPort {
 
   async sendEmail(
     email: string,
+    title: string,
     name: string,
     htmlBody: string,
-  ): Promise<void> {
+  ): Promise<ZeptoMailResponse> {
     try {
       //? Si el ambiente es dev o qa, se envía el correo a un email específico para pruebas
       if (this.appEnv === 'dev' || this.appEnv === 'qa') {
         email = this.testMail;
       }
 
-      await this.client.sendMail({
+      return await this.client.sendMail({
         from: {
           address: this.address,
           name: this.name,
@@ -63,7 +65,7 @@ export class zeptoMailAdapter implements EmailSendPort {
             },
           },
         ],
-        subject: `CALIFICA TU CLASE DE HOY`,
+        subject: `${title}`,
         htmlBody: htmlBody,
       });
     } catch (e) {

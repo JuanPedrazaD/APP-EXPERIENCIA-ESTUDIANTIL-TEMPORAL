@@ -20,7 +20,6 @@ export class EmailHTMLTemplateService {
 </head>
 
 <body>
-    ${title},
     ${message},
 </body>
 </html>
