@@ -24,13 +24,18 @@ export class SaveNotificationService {
     notificationIndividualDto: NotificationIndividualDto,
   ) /* : Promise<number> */ {
     try {
-      //Se valida si existe una notificación ya creada
+      // Normalizas los valores del DTO
+      const title = notificationIndividualDto.title?.trim();
+      const message = notificationIndividualDto.message?.trim();
+      const sendType = notificationIndividualDto.notificationType?.trim();
+
+      // Se valida si existe una notificación ya creada
       const findNotification = await this.notificationHistoryRepository.findOne(
         {
           where: {
-            title: notificationIndividualDto.title,
-            message: notificationIndividualDto.message,
-            send_type: notificationIndividualDto.notificationType,
+            title,
+            message,
+            send_type: sendType,
           },
         },
       );

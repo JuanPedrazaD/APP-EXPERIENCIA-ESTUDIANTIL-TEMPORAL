@@ -4,10 +4,10 @@ import { Logger } from 'winston';
 
 import { Repository } from 'typeorm';
 
-import {
-  BatchResponse,
-  SendResponse,
-} from 'firebase-admin/lib/messaging/messaging-api';
+import type { messaging } from 'firebase-admin';
+
+type BatchResponse = messaging.BatchResponse;
+type SendResponse = messaging.SendResponse;
 
 import { catchGenericException } from 'src/infrastructure/interface/common/utils/errors/catch-generic.exception';
 import { FcmTokenEntity } from 'src/domain/fcm-token/entity/fcm-token.pstgs.entity';
@@ -34,7 +34,7 @@ export class IndividualNotificationService {
   ) {}
 
   async sendNotification(notificationIndividualDto: NotificationIndividualDto) {
-    const { notificationType, saveNotification, title, email, message } =
+    const { notificationType, saveNotification, title, email, message, appId } =
       notificationIndividualDto;
 
     try {
@@ -57,7 +57,7 @@ export class IndividualNotificationService {
         saved = response.saved;
       }
 
-      //? Anotaciones para guardar el titulo y el mensaje cuando no se decide guardar la notificación
+      //? Anotaciones para guardar el titulo y el mensaje cuando el parametro save es false
       let anotations: string = '';
       if (saveNotification == false) {
         anotations = `title: ${title}, message: ${message}`;
@@ -67,6 +67,7 @@ export class IndividualNotificationService {
       const devices: FcmTokenEntity[] = await this.fcmTokenRepository.find({
         where: {
           email,
+          appId,
           state: 1,
         },
       });
