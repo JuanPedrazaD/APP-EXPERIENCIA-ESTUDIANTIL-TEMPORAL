@@ -41,6 +41,15 @@ export class NotificationController {
     private readonly individualNotificationService: IndividualNotificationService,
   ) {}
 
+  @ApiOperation({
+    summary: 'Obtener las notificaciones enviadas a un usuario',
+    description:
+      'Este endpoint permite obtener las notificaciones enviadas a un usuario .\n\n' +
+      '**Detalles del funcionamiento:**\n' +
+      '- Se buscan las notificaciones enviadas a un usuario en especifico tentiendo en cuenta:\n' +
+      ' - Aplicación y ambiente de la misma, (diferentes ambientes de la misma aplicación se toma como ambientes diferentes)\n',
+  })
+  @HttpCode(HttpStatus.OK)
   @Get('sended-by-user')
   getNotificationsByUser(
     @Body() notificationByUserRequestDto: NotificationByUserRequestDto,
@@ -53,6 +62,12 @@ export class NotificationController {
   @Post('historical')
   getNotificacions() {}
 
+  @ApiOperation({
+    summary: 'Obtener todos los grupos de usuarios para notificar',
+    description:
+      'Este endpoint permite obtener todos los grupos disponibles para envio de notificaciones activos .\n\n',
+  })
+  @HttpCode(HttpStatus.OK)
   @Get('groups')
   getGroups(): Promise<UserGroupsEntity[]> {
     return this.showGroupsService.getGroups();
@@ -66,7 +81,7 @@ export class NotificationController {
 
   @Post('send/by-group')
   sendGroupNotification(@Body() notificationGroupDto: NotificationGroupDto) {
-    return this.groupNotificationService.sendNotification();
+    return this.groupNotificationService.sendNotification(notificationGroupDto);
   }
 
   @ApiOperation({
