@@ -17,7 +17,6 @@ import { EmailHTMLTemplateService } from '../shared/email/email-template-html.se
 import { EmailSendPort } from '../shared/port/email-send.abstract';
 import { zeptoMailAdapter } from 'src/infrastructure/adapter/zeptomail.adapter';
 import { NotificationsByuserService } from './notifications-by-user.service';
-import { NotificationByUserDao } from 'src/domain/notification/dao/notification-by-user.dao';
 
 @Module({
   providers: [
@@ -32,7 +31,6 @@ import { NotificationByUserDao } from 'src/domain/notification/dao/notification-
     SendEmailService,
     EmailHTMLTemplateService,
     NotificationsByuserService,
-    NotificationByUserDao,
     {
       provide: EmailSendPort,
       useClass: zeptoMailAdapter,
