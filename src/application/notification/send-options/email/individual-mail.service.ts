@@ -13,7 +13,7 @@ import { MailSendHistoryEntity } from 'src/domain/notification/entity/email/mail
 import { ZeptoMailResponse } from 'src/domain/notification/interface/zeptomail/zeptomail-response.interface';
 
 @Injectable()
-export class SendEmailService {
+export class IndividualMailService {
   constructor(
     @Inject('MAIL_SEND_HISTORY_REPOSITORY')
     private readonly mailSendHistoryRepository: Repository<MailSendHistoryEntity>,
@@ -30,11 +30,13 @@ export class SendEmailService {
     try {
       const { title, message, email, appId } = notificationIndividualDto;
 
+      // Obtener el html del correo
       const htmlBody: string = this.emailHTMLTemplateService.getEmailTemplate(
         title,
         message,
       );
 
+      //Enviar el email y obtener una respuesta
       const response: ZeptoMailResponse = await this.emailSendPort.sendEmail(
         email,
         title,
@@ -46,12 +48,14 @@ export class SendEmailService {
         throw new Error(`Error al enviar el email: ${response.message}`);
       }
 
+      // Guardar el envío del correo en base de datos
       await this.mailSendHistoryRepository.save({
         notificationId,
         appId,
         sendState: response.message,
       });
 
+      // Devolver la respuesta y si la notificación fue guardada
       return {
         saved,
         response: response.message,
