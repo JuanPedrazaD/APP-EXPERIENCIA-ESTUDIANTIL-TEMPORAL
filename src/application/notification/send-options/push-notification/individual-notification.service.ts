@@ -15,7 +15,7 @@ import { NotificationIndividualDto } from 'src/domain/notification/dto/send/indi
 import { NotificationSendPort } from '../../../shared/port/notification-send.abstract';
 import { NotificationType } from 'src/infrastructure/interface/common/utils/helpers/enums/notification-type.utils.helpers';
 import { SaveNotificationService } from '../../save-notification.service';
-import { SendEmailService } from '../email/individual-email.service';
+import { IndividualMailService } from '../email/individual-mail.service';
 import { SendHistoryEntity } from 'src/domain/notification/entity/send-history.pstgs.entity';
 
 const DEFAULT_NOTIFICATION_ID = 1; // Valor por defecto si no se guarda la notificación
@@ -29,7 +29,7 @@ export class IndividualNotificationService {
     private readonly sendHistoryRepository: Repository<SendHistoryEntity>,
     private readonly saveNotificationService: SaveNotificationService,
     private readonly notificationSendPort: NotificationSendPort,
-    private readonly sendEmailService: SendEmailService,
+    private readonly individualMailService: IndividualMailService,
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
 
@@ -66,7 +66,7 @@ export class IndividualNotificationService {
 
       //? Si el modo de envío es email se usa zeptomail
       if (notificationType == ('email' as NotificationType)) {
-        return this.sendEmailService.sendEmail(
+        return this.individualMailService.sendEmail(
           notificationIndividualDto,
           notificationId,
           saved,
