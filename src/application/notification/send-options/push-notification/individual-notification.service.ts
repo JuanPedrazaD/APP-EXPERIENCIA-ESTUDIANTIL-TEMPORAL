@@ -11,7 +11,7 @@ type SendResponse = messaging.SendResponse;
 
 import { catchGenericException } from 'src/infrastructure/interface/common/utils/errors/catch-generic.exception';
 import { FcmTokenEntity } from 'src/domain/fcm-token/entity/fcm-token.pstgs.entity';
-import { NotificationIndividualDto } from 'src/domain/notification/dto/send/individual-group-request.dto';
+import { NotificationIndividualDto } from 'src/domain/notification/dto/send/notification-individual-request.dto';
 import { NotificationSendPort } from '../../../shared/port/notification-send.abstract';
 import { NotificationType } from 'src/infrastructure/interface/common/utils/helpers/enums/notification-type.utils.helpers';
 import { SaveNotificationService } from '../../save-notification.service';

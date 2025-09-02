@@ -72,9 +72,9 @@ export class GroupNotificationService {
         }
         return this.groupMailService
           .sendMail
-          // notificationIndividualDto,
           // notificationId,
           // saved,
+          // notificationGroupDto,
           ();
       }
 

@@ -20,7 +20,7 @@ import { CommonApiDocResponses } from '../interface/common/utils/decorators/comm
 import { GroupNotificationService } from 'src/application/notification/send-options/push-notification/group-notification.service';
 import { IndividualNotificationService } from 'src/application/notification/send-options/push-notification/individual-notification.service';
 import { NotificationGroupDto } from 'src/domain/notification/dto/send/notification-group-request.dto';
-import { NotificationIndividualDto } from 'src/domain/notification/dto/send/individual-group-request.dto';
+import { NotificationIndividualDto } from 'src/domain/notification/dto/send/notification-individual-request.dto';
 import { ShowGroupsService } from 'src/application/notification/user-groups/show-growps.service';
 import { UserGroupsEntity } from 'src/domain/notification/entity/user-groups.pstgs.entity';
 import { SearchUserService } from 'src/application/notification/user-groups/search-user.service';
@@ -68,8 +68,15 @@ export class NotificationController {
       'Este endpoint permite obtener todos los grupos disponibles para envio de notificaciones activos .\n\n',
   })
   @HttpCode(HttpStatus.OK)
-  @Get('groups')
+  //TODO validar si este endpoint debe estar en este controlador
+  @Get('admin-teacher/groups')
   getGroups(): Promise<UserGroupsEntity[]> {
+    return this.showGroupsService.getGroups();
+  }
+
+  //TODO validar si este endpoint debe estar en este controlador
+  @Get('student/groups')
+  getStudentGroups(): Promise<UserGroupsEntity[]> {
     return this.showGroupsService.getGroups();
   }
 

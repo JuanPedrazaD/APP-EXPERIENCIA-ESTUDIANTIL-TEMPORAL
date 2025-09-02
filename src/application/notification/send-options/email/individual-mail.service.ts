@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 import { catchGenericException } from 'src/infrastructure/interface/common/utils/errors/catch-generic.exception';
 import { EmailHTMLTemplateService } from 'src/application/shared/email/email-template-html.service';
 import { EmailSendPort } from 'src/application/shared/port/email-send.abstract';
-import { NotificationIndividualDto } from 'src/domain/notification/dto/send/individual-group-request.dto';
+import { NotificationIndividualDto } from 'src/domain/notification/dto/send/notification-individual-request.dto';
 import { MailSendHistoryEntity } from 'src/domain/notification/entity/email/mail-send-history.pstgs.entity';
 import { ZeptoMailResponse } from 'src/domain/notification/interface/zeptomail/zeptomail-response.interface';
 
