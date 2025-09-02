@@ -6,10 +6,13 @@ import * as admin from 'firebase-admin';
 import { Logger } from 'winston';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 
+import type { messaging } from 'firebase-admin';
+
+type BatchResponse = messaging.BatchResponse;
+
 import { NotificationSendPort } from 'src/application/shared/port/notification-send.abstract';
 import { catchGenericException } from '../interface/common/utils/errors/catch-generic.exception';
 import { EnvInterface } from '../interface/common/config/config';
-import { BatchResponse } from 'firebase-admin/lib/messaging/messaging-api';
 
 @Injectable()
 export class FirebaseNotificationAdapter implements NotificationSendPort {
@@ -28,7 +31,7 @@ export class FirebaseNotificationAdapter implements NotificationSendPort {
         credential: admin.credential.cert({
           projectId: PROJECT_ID,
           clientEmail: CLIENT_EMAIL,
-          privateKey: PRIVATE_KEY,
+          privateKey: PRIVATE_KEY.replace(/\\n/g, '\n'),
         }),
       });
     } else {
@@ -40,10 +43,7 @@ export class FirebaseNotificationAdapter implements NotificationSendPort {
     tokens: string[],
     title: string,
     body: string,
-  ): Promise<{
-    success: boolean;
-    response: BatchResponse;
-  }> {
+  ): Promise<{ success: boolean; response: BatchResponse }> {
     try {
       const message: admin.messaging.MulticastMessage = {
         tokens,

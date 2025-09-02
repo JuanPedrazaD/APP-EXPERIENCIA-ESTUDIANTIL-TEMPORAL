@@ -12,11 +12,15 @@ import { SaveNotificationService } from './save-notification.service';
 import { Login360Service } from './user-groups/360-requests/360-apis-login.service';
 import { AdminValidationService } from './user-groups/360-requests/admin-validation.service';
 import { StudentValidationService } from './user-groups/360-requests/student-validation.service';
-import { SendEmailService } from './send-options/email/individual-email.service';
+import { IndividualMailService } from './send-options/email/individual-mail.service';
 import { EmailHTMLTemplateService } from '../shared/email/email-template-html.service';
 import { EmailSendPort } from '../shared/port/email-send.abstract';
 import { zeptoMailAdapter } from 'src/infrastructure/adapter/zeptomail.adapter';
 import { NotificationsByuserService } from './notifications-by-user.service';
+import { SearchStudentsDao } from 'src/domain/notification/dao/search-students.dao';
+import { GroupMailService } from './send-options/email/group-mail.service';
+import { DeviceService } from './batching/user-devices.service';
+import { FcmSendService } from './batching/fcm-send.service';
 
 @Module({
   providers: [
@@ -28,9 +32,13 @@ import { NotificationsByuserService } from './notifications-by-user.service';
     Login360Service,
     AdminValidationService,
     StudentValidationService,
-    SendEmailService,
+    IndividualMailService,
     EmailHTMLTemplateService,
     NotificationsByuserService,
+    GroupMailService,
+    DeviceService,
+    FcmSendService,
+    SearchStudentsDao,
     {
       provide: EmailSendPort,
       useClass: zeptoMailAdapter,

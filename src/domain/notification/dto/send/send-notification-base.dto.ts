@@ -44,6 +44,5 @@ export class SendNotificationBaseDto {
   })
   @IsNumber()
   @IsNotEmpty()
-  @ValidateIf((o) => o.saveNotification === true)
   appId: number;
 }

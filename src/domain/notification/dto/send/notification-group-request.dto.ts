@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsNotEmpty } from 'class-validator';
+import { IsIn, IsInt, IsNotEmpty } from 'class-validator';
 
 import { SendNotificationBaseDto } from './send-notification-base.dto';
 
@@ -10,4 +10,11 @@ export class NotificationGroupDto extends SendNotificationBaseDto {
   @IsInt()
   @IsNotEmpty()
   groupId: number;
+
+  @ApiProperty({
+    example: 1,
+  })
+  @IsIn(['teacher', 'admin', 'student'])
+  @IsNotEmpty()
+  groupName: string;
 }
