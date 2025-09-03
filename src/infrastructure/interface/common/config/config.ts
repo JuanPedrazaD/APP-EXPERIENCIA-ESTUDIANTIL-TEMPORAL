@@ -8,7 +8,7 @@ export interface EnvInterface {
   TIMEOUT: number;
   API_PREFIX: string;
   APP_ENV: ValidAppEnv;
-  // WEB360: string;
+  WEB360: string;
   // CDN: string;
   TESTMAIL: string;
   SWAGGER: {
@@ -70,7 +70,7 @@ export default registerAs('configuration', (): EnvInterface => {
     TIMEOUT: parseInt(process.env.TIMEOUT || '60'),
     API_PREFIX: process.env.API_PREFIX || 'api/v2',
     APP_ENV: process.env.APP_ENV as ValidAppEnv,
-    // WEB360: process.env.WEB360 || 'http://localhost:4200/#/',
+    WEB360: process.env.WEB360 || 'http://localhost:4200/#/',
     // CDN: process.env.CDN || 'http://localhost',
     TESTMAIL: process.env.TESTMAIL || 'pruebas@cun.edu.co',
     SWAGGER: {
